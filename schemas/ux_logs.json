@@ -1,0 +1,12 @@
+{
+  "timestamp": "ISO-8601",
+  "user_id": "string",
+  "session_id": "string",
+  "event_type": "glitch | latency | crash | navigation",
+  "value": "float",
+  "metadata": {
+    "device": "string",
+    "os_version": "string",
+    "screen_size": "string"
+  }
+}

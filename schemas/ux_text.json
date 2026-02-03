@@ -1,0 +1,6 @@
+{
+  "review_id": "string",
+  "order_id": "string",
+  "review_text": "string",
+  "timestamp": "ISO-8601"
+}
