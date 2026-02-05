@@ -1,18 +1,18 @@
 project:
   name: "UX-Agent"
-  version: "1.1.0"
+  version: "1.3.0" # 🔧 Updated for Pagination & History Features
 
 model:
   log_input_dim: 10
   behavior_input_dim: 5
   text_model_name: "distilbert-base-uncased"
   fusion_hidden_dim: 128
-  max_length: 128  # 🔧 Added to ensure text consistency
+  max_length: 128
 
 training:
   batch_size: 16
   learning_rate: 0.0001
-  epochs: 20       # 🔧 Increased for better convergence
+  epochs: 20
   device: "auto"
 
 paths:
@@ -21,4 +21,24 @@ paths:
   screenshots: "data/screenshots/"
   models: "models/"
   logs: "logs/"
-  scaler: "models/scaler.pkl" # 🔧 New: Path to save numerical scaling stats
+  scaler: "models/scaler.pkl"
+  # 🔧 Persistent database for historical score memory
+  db_path: "data/ux_history.db" 
+
+autonomy:
+  # 🔧 Moving Average Decay (Alpha)
+  # 0.1 means the new session accounts for 10% of the global score change.
+  decay_factor: 0.1
+  
+  # 🔧 Watcher Settings
+  # The directory the agent will monitor for new incoming JSON logs/reviews
+  monitor_dir: "data/incoming_telemetry/"
+  check_interval_seconds: 10
+
+ui:
+  # 🔧 NEW: Control the number of reviews displayed in the feed per page
+  dashboard_page_size: 20
+  
+  # 🔧 NEW: Limit the number of recent records used for diagnostic correlation
+  # to ensure the dashboard charts stay fast even with thousands of rows.
+  max_diagnostic_buffer: 100
