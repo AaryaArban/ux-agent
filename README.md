@@ -1,26 +1,33 @@
-🚀 UX Agent
+# 🚀 UX Agent
 
-The UX Agent is an autonomous machine learning system designed to monitor, analyze, and predict User Experience (UX) quality in real-time. By fusing technical logs, user behavioral patterns, and natural language reviews, the agent provides a holistic "Global UX Score" and offers deep-dive diagnostic insights into system performance.
+The **UX Agent** is an autonomous machine learning system designed to monitor, analyze, and predict User Experience (UX) quality in real-time. By fusing technical logs, user behavioral patterns, and natural language reviews, the agent provides a holistic "Global UX Score" and offers deep-dive diagnostic insights into system performance.
 
-🛠️ Tech Stack & Dependencies
-Core Technologies
-Intelligence: PyTorch (DistilBERT for NLP, Multi-Layer Perceptrons for Log/Behavior Encoders).
+---
 
-API Layer: FastAPI & Uvicorn.
+## 🛠️ Tech Stack & Dependencies
 
-Visuals: Streamlit & Plotly.
+### **Core Technologies**
 
-Persistence: SQLite3 (Historical Session Memory).
+* **Intelligence**: PyTorch (DistilBERT for NLP, Multi-Layer Perceptrons for Log/Behavior Encoders).
+* **API Layer**: FastAPI & Uvicorn.
+* **Visuals**: Streamlit & Plotly.
+* **Persistence**: SQLite3 (Historical Session Memory).
+* **Automation**: Watchdog (Event-driven file monitoring).
 
-Automation: Watchdog (Event-driven file monitoring).
+### **Installation**
 
-Installation
 Ensure you have Python 3.10+ installed. Run the following command to install all required libraries:
 
-Bash
+```bash
 pip install fastapi uvicorn watchdog requests scikit-learn joblib pyyaml transformers torch streamlit plotly pandas numpy
-📂 Project Structure
-Plaintext
+
+```
+
+---
+
+## 📂 Project Structure
+
+```text
 BE-MPR/
 ├── api/
 │   └── ux_agent_api.py      # The "Brain" (Inference & Database Management)
@@ -36,43 +43,53 @@ BE-MPR/
 │   └── incoming_telemetry/  # Buffer for real-time JSON logs
 └── config.yaml              # Global project configuration
 
-⚙️ Execution Steps
-Phase 1: Preparation
+```
+
+---
+
+## ⚙️ Execution Steps
+
+### **Phase 1: Preparation**
+
 Before launching the autonomous loop, you must prepare the model:
 
-Generate Data: python synthetic_data_generator.py (Creates amplified training signals).
+1. **Generate Data**: `python synthetic_data_generator.py` (Creates amplified training signals).
+2. **Train Model**: `python -m training.train_ux_agent` (Saves weights and initializes DB).
 
-Train Model: python -m training.train_ux_agent (Saves weights and initializes DB).
+### **Phase 2: Launching the Ecosystem**
 
-Phase 2: Launching the Ecosystem
-You can use the provided run_ux_agent.bat file or open four terminals manually:
+You can use the provided `run_ux_agent.bat` file or open four terminals manually:
 
-Terminal 1 (API): uvicorn api.ux_agent_api:app --reload
+1. **Terminal 1 (API)**:
+`uvicorn api.ux_agent_api:app --reload`
+2. **Terminal 2 (Watcher)**:
+`python deployment/log_watcher.py`
+3. **Terminal 3 (Streamer)**:
+`python scripts/autonomous_streamer.py`
+4. **Terminal 4 (Dashboard)**:
+`streamlit run dashboard/app.py`
 
-Terminal 2 (Watcher): python deployment/log_watcher.py
+---
 
-Terminal 3 (Streamer): python scripts/autonomous_streamer.py
+## 🧠 Detailed Working of the UX Agent
 
-Terminal 4 (Dashboard): streamlit run dashboard/app.py
+### **1. The Data Fusion Process**
 
-🧠 Detailed Working of the UX Agent
-1. The Data Fusion Process
 The agent processes three distinct data streams simultaneously:
 
-Log Stream: 10 technical metrics (Latency, Crashes, Load times).
+* **Log Stream**: 10 technical metrics (Latency, Crashes, Load times).
+* **Behavior Stream**: 5 patterns (Rage clicks, Page loops, Misclicks).
+* **Sentiment Stream**: Raw user review text analyzed via DistilBERT.
 
-Behavior Stream: 5 patterns (Rage clicks, Page loops, Misclicks).
+### **2. Autonomous Memory & Scoring**
 
-Sentiment Stream: Raw user review text analyzed via DistilBERT.
+* **EMA Scoring**: Every new session updates a "Global UX Score" using an Exponential Moving Average (EMA). This prevents the score from jumping erratically while still reacting to trends.
+* **Decay Factor**: A `0.1` decay factor ensures the system retains a "memory" of previous performance while prioritizing recent data.
 
-2. Autonomous Memory & Scoring
-EMA Scoring: Every new session updates a "Global UX Score" using an Exponential Moving Average (EMA). This prevents the score from jumping erratically while still reacting to trends.
+### **3. Diagnostic Drill-Down & Alerting**
 
-Decay Factor: A 0.1 decay factor ensures the system retains a "memory" of previous performance while prioritizing recent data.
+* **Metric Correlation**: The system mathematically calculates which technical metric has the strongest negative correlation with the current UX score.
+* **Predictive Alerts**: If the system detects five consecutive sessions with declining scores, it triggers a **Predictive Alert** in the dashboard to warn developers before a system failure occurs.
+* **Pagination & Filter**: The dashboard supports SQL-level pagination and sentiment filtering, allowing developers to audit thousands of historical reviews without performance lag.
 
-3. Diagnostic Drill-Down & Alerting
-Metric Correlation: The system mathematically calculates which technical metric has the strongest negative correlation with the current UX score.
-
-Predictive Alerts: If the system detects five consecutive sessions with declining scores, it triggers a Predictive Alert in the dashboard to warn developers before a system failure occurs.
-
-Pagination & Filter: The dashboard supports SQL-level pagination and sentiment filtering, allowing developers to audit thousands of historical reviews without performance lag.
+---
