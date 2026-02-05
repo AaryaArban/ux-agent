@@ -29,18 +29,31 @@ pip install fastapi uvicorn watchdog requests scikit-learn joblib pyyaml transfo
 
 ```text
 BE-MPR/
+
 ├── api/
+
 │   └── ux_agent_api.py      # The "Brain" (Inference & Database Management)
+
 ├── dashboard/
+
 │   └── app.py               # The "View" (Real-time Command Center)
+
 ├── deployment/
+
 │   └── log_watcher.py       # The "Eyes" (Monitors incoming telemetry)
+
 ├── scripts/
+
 │   └── autonomous_streamer.py # The "User" (Simulates continuous traffic)
+
 ├── models/                  # Trained weights (.pt) and Scalers (.pkl)
+
 ├── data/
+
 │   ├── ux_history.db        # Persistent SQL database
+
 │   └── incoming_telemetry/  # Buffer for real-time JSON logs
+
 └── config.yaml              # Global project configuration
 
 ```
